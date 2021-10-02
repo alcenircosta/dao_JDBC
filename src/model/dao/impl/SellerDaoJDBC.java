@@ -28,35 +28,53 @@ public class SellerDaoJDBC implements SellerDao {
 	public void insert(Seller seller) {
 		PreparedStatement pst = null;
 		try {
-			pst = conn.prepareStatement("INSERT INTO seller (Name,Email,BirthDate,BaseSalary, DepartmentId) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			pst = conn.prepareStatement(
+					"INSERT INTO seller (Name,Email,BirthDate,BaseSalary, DepartmentId) VALUES (?,?,?,?,?)",
+					Statement.RETURN_GENERATED_KEYS);
 			pst.setString(1, seller.getName());
 			pst.setString(2, seller.getEmail());
 			pst.setDate(3, new java.sql.Date(seller.getBirthDate().getTime()));
 			pst.setDouble(4, seller.getBaseSalary());
 			pst.setInt(5, seller.getDepartment().getId());
-			
+
 			int rowsAffected = pst.executeUpdate();
-			if(rowsAffected > 0) {
+			if (rowsAffected > 0) {
 				ResultSet rs = pst.getGeneratedKeys();
-				if(rs.next()) {
+				if (rs.next()) {
 					int id = rs.getInt(1);
 					seller.setId(id);
 				}
 				DB.closeResultSet(rs);
-			}else {
+			} else {
 				throw new DbException("Unexpected error!  No rows affected!");
 			}
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}finally {
+		} finally {
 			DB.closeStatement(pst);
 		}
 	}
 
 	@Override
 	public void update(Seller seller) {
-		// TODO Auto-generated method stub
+		PreparedStatement pst = null;
+		try {
+			pst = conn.prepareStatement(
+					"UPDATE seller SET Name=?,Email=?, BirthDate=?,BaseSalary=?,DepartmentId=? WHERE Id = ?",
+					Statement.RETURN_GENERATED_KEYS);
+			pst.setString(1, seller.getName());
+			pst.setString(2, seller.getEmail());
+			pst.setDate(3, new java.sql.Date(seller.getBirthDate().getTime()));
+			pst.setDouble(4, seller.getBaseSalary());
+			pst.setInt(5, seller.getDepartment().getId());
+			pst.setInt(6, seller.getId());
+			pst.executeUpdate();
 
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(pst);
+		}
 	}
 
 	@Override
