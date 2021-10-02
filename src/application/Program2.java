@@ -12,9 +12,16 @@ public class Program2 {
 		DepartmentDao departmentDao = DAOFactory.createDepartmentDao();
 		Department dep;
 		
-		System.out.println("====TEST 4: Insert====");
-		dep = new Department(8,"Drinks");
+		System.out.println("====TEST 1: Insert====");
+		dep = new Department(12,"Drinks");
 		departmentDao.insert(dep);
+		System.out.println("Inserted, new department: "+dep.getId());
+		System.out.println();
+		
+		System.out.println("====TEST 2: Update====");
+		dep = new Department(8,"Drinks");
+		dep.setName("Potatoes");
+		departmentDao.update(dep);
 		System.out.println("Inserted, new department: "+dep.getId());
 		System.out.println();
 		
