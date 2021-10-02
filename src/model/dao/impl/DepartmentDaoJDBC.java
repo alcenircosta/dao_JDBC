@@ -23,7 +23,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 	public void insert(Department obj) {
 		PreparedStatement pst = null;
 		try {
-			pst = conn.prepareStatement("INSERT INTO department (Name) VALUES (?)",Statement.RETURN_GENERATED_KEYS);
+			pst = conn.prepareStatement("INSERT INTO department (Name) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
 			pst.setString(1, obj.getName());
 			int rowsAffected = pst.executeUpdate();
 			if (rowsAffected == 0) {
@@ -57,8 +57,17 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
-
+		PreparedStatement pst = null;
+		try {
+			pst = conn.prepareStatement("DELETE FROM department WHERE Id = ?");
+			pst.setInt(1, id);
+			int rowsAffected = pst.executeUpdate();
+			if (rowsAffected == 0) {
+				throw new DbException("No registers found with id " + id);
+			}
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
 	}
 
 	@Override

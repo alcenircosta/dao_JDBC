@@ -25,6 +25,11 @@ public class Program2 {
 		System.out.println("Inserted, new department: "+dep.getId());
 		System.out.println();
 		
+		System.out.println("====TEST 3: Delete====");
+		System.out.println("Enter id for delete test: ");
+		departmentDao.deleteById(sc.nextInt());
+		System.out.println("Delete complete");
+		System.out.println();
 		
 		sc.close();
 	}
